@@ -1,6 +1,12 @@
-<?php include('includes/_header.php'); ?>
+{% extends 'base.html.twig' %}
 
-<link rel="stylesheet" href="../../app-symf4-1/template/assets/css/login.css">
+ {% block customstylesheets %}
+     <link rel="stylesheet" href=" {{ asset('assets/css/login.css') }}">
+ {% endblock %}
+
+{% block menu %} {% endblock %}
+
+{% block main %}
 
 <form method="POST" action="#" class="form-signin">
     <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
@@ -14,7 +20,8 @@
         </label>
     </div>
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017-2018 <a href="index.html.twig">main page</a></p>
+    <p class="mt-5 mb-3 text-muted">&copy; 2017-2018 <a href="{{ path('main_page') }}">main page</a></p>
 </form>
+{% endblock %}
 
-<?php include('includes/_footer.php'); ?>
+{% block footer_links %} {% endblock %}
