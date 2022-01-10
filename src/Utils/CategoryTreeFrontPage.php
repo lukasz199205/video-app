@@ -3,6 +3,7 @@
 namespace App\Utils;
 
 
+use App\Twig\AppExtension;
 use App\Utils\AbstractClasses\CategoryTreeAbstract;
 
 class CategoryTreeFrontPage extends CategoryTreeAbstract
@@ -15,13 +16,26 @@ class CategoryTreeFrontPage extends CategoryTreeAbstract
     public $html_6 = '</li>';
     public $html_7 = '</ul>';
 
+    public function getCategoryListAndParent(int $id): string
+    {
+        $this->slugger = new AppExtension(); // to slugify url for categories
+        $parentData = $this->getMainParent($id); //main parent subcategory
+        $this->mainParentName = $parentData['name']; //for acces in view
+        $this->mainParentId = $parentData['id'];
+        $key = array_search($id, array_column($this->categoriesArrayFromDb, 'id'));
+        $this->currentCategoryName = $this->categoriesArrayFromDb[$key]['name']; //for view access
+        $categories_array = $this->buildTree($parentData['id']);
+        return $this->getCategoryList($categories_array);
+
+    }
+
     public function getCategoryList(array $categories_array) :string
     {
 
         $this->categoryList .= $this->html_1;
 
         foreach ($categories_array as $value) {
-            $catName = $value['name'];
+            $catName = $this->slugger->slugify($value['name']);
             $url = $this->urlGenerator->generate('video_list', ['categoryname'=>$catName, 'id'=>$value['id']]);
             $this->categoryList .= $this->html_2. $this->html_3 . $url . $this->html_4 . $catName  . $this->html_5;
             if (!empty($value['children'])){
@@ -32,5 +46,18 @@ class CategoryTreeFrontPage extends CategoryTreeAbstract
         $this->categoryList .= $this->html_7;
 
         return $this->categoryList;
+    }
+
+    public function getMainParent(int $id): array
+    {
+        $key = array_search($id, array_column($this->categoriesArrayFromDb, 'id'));
+        if ($this->categoriesArrayFromDb[$key]['parent_id'] != null) {
+            return $this->getMainParent($this->categoriesArrayFromDb[$key]['parent_id']);
+        } else {
+            return [
+                'id' => $this->categoriesArrayFromDb[$key]['id'],
+                'name' => $this->categoriesArrayFromDb[$key]['name']
+            ];
+        }
     }
 }
