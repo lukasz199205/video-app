@@ -1,4 +1,12 @@
-<option selected value="0"> No parent </option>
+{% if editedCategory.parent is defined and editedCategory.parent == null %}
+    <option selected value="0"> No parent </option>
+{% else %}
+    <option selected value="0"> No parent </option>
+{% endif %}
 {% for category in categories.categoryList %}
-    <option selected value="{{ category.id }}"> {{ category.name }} </option>
+    {% if editedCategory.parent.getId() is defined and editedCategory.parent.getId() == category.id %}
+        <option selected value="{{ category.id }}"> {{ category.name }} </option>
+    {% else %}
+        <option value="{{ category.id }}"> {{ category.name }} </option>
+    {% endif %}
 {% endfor %}
