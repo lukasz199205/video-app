@@ -73,9 +73,14 @@
         }
     },
     "require-dev": {
+        "dama/doctrine-test-bundle": "^6.7",
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "4.4.*",
+        "symfony/css-selector": "4.4.*",
         "symfony/debug-bundle": "4.4.*",
         "symfony/maker-bundle": "^1.36",
+        "symfony/phpunit-bridge": "^6.0",
         "symfony/stopwatch": "4.4.*",
         "symfony/web-profiler-bundle": "4.4.*"
     }
