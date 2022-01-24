@@ -2,6 +2,7 @@
 
 namespace App\tests;
 
+use App\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AdminControllerCategoriesTest extends WebTestCase
@@ -35,6 +36,21 @@ class AdminControllerCategoriesTest extends WebTestCase
         $this->assertCount(21, $crawler->filter('option'));
     }
 
-    //TODO: testAddNewCategory
+    public function testNewCategory()
+    {
+        $crawler = $this->client->request('GET', '/admin/categories');
+
+        $form = $crawler->selectButton('Add')->form([
+            'category[parent]' => 1,
+            'category[name]' => 'Other electronics'
+        ]);
+        $this->client->submit($form);
+
+        $category = $this->entityManager->getRepository(Category::class)
+            ->findOneBy(['name' => 'Other electronics']);
+
+        $this->assertNotNull($category);
+        $this->assertSame('Other electronics', $category->getName());
+    }
 }
 
