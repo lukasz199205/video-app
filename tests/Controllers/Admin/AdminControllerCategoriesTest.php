@@ -26,7 +26,7 @@ class AdminControllerCategoriesTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/admin/categories');
         $this->assertSame('Categories list', $crawler->filter('h2')->text());
-    // TODO:   $this->assertContains('Electronics', $this->client->getResponse()->getContent());
+        $this->assertStringContainsString('Electronics', $this->client->getResponse()->getContent());
     }
 
     public function testNumberOfItems()
@@ -34,5 +34,7 @@ class AdminControllerCategoriesTest extends WebTestCase
         $crawler = $this->client->request('GET', '/admin/categories');
         $this->assertCount(21, $crawler->filter('option'));
     }
+
+    //TODO: testAddNewCategory
 }
 
