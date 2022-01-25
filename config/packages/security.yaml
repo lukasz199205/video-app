@@ -17,6 +17,29 @@ security:
         main:
             anonymous: lazy
             provider: app_user_provider
+            form_login:
+                # login route name
+                check_path: login
+                # user redirection when he tries to access protected page
+                login_path: login
+                # csrf security
+                csrf_token_generator: security.csrf.token_manager
+                # redirection after login
+                default_target_path: admin_main_page
+                username_parameter: _email
+
+            logout:
+                # logout route
+                path: logout
+                # redirection after logout
+                target: main_page
+
+            remember_me:
+                secret: '%kernel.secret%'
+                # 1 week in secs
+                lifetime: 604800
+                # cookies are valid for entire website
+                path: /
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
