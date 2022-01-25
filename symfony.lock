@@ -109,6 +109,12 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.5"
     },
+    "knplabs/knp-components": {
+        "version": "v3.4.0"
+    },
+    "knplabs/knp-paginator-bundle": {
+        "version": "v5.8.0"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
     },
@@ -435,11 +441,48 @@
             "config/routes.yaml"
         ]
     },
+    "symfony/security-bundle": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "7b4408dc203049666fe23fabed23cbadc6d8440f"
+        },
+        "files": [
+            "config/packages/security.yaml"
+        ]
+    },
+    "symfony/security-core": {
+        "version": "v4.4.36"
+    },
+    "symfony/security-csrf": {
+        "version": "v4.4.27"
+    },
+    "symfony/security-guard": {
+        "version": "v4.4.27"
+    },
+    "symfony/security-http": {
+        "version": "v4.4.36"
+    },
     "symfony/service-contracts": {
         "version": "v2.5.0"
     },
     "symfony/stopwatch": {
         "version": "v4.4.27"
+    },
+    "symfony/translation": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "2ad9d2545bce8ca1a863e50e92141f0b9d87ffcd"
+        },
+        "files": [
+            "config/packages/translation.yaml",
+            "translations/.gitignore"
+        ]
     },
     "symfony/translation-contracts": {
         "version": "v2.5.0"
