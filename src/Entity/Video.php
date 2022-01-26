@@ -16,6 +16,7 @@ class Video
 {
     public const videoForNotLoggedIn = 113716040;
     public const vimeoPath = 'https://player.vimeo.com/video/';
+    public const perPage = 5; //for pagination
 
     /**
      * @ORM\Id
@@ -51,11 +52,13 @@ class Video
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="likedVideos")
+     * @ORM\JoinTable(name="likes")
      */
     private $usersThatLike;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="dislikedVideos")
+     * @ORM\JoinTable(name="dislikes")
      */
     private $usersThatDontLike;
 

@@ -63,11 +63,13 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity=Video::class, mappedBy="usersThatLike")
+     * @ORM\JoinTable(name="likes")
      */
     private $likedVideos;
 
     /**
      * @ORM\ManyToMany(targetEntity=Video::class, mappedBy="usersThatDontLike")
+     * @ORM\JoinTable(name="dislikes")
      */
     private $dislikedVideos;
 
