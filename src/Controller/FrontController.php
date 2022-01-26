@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Category;
+use App\Entity\Comment;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Form\UserType;
@@ -147,6 +148,26 @@ class FrontController extends AbstractController
     public function payment(): Response
     {
         return $this->render('front/payment.html.twig');
+    }
+
+    /**
+     * @Route("/new-comment/{video}", methods={"POST"}, name="new_comment")
+     */
+    public function newComment(Video $video, Request $request): Response
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
+        if (!empty(trim($request->request->get('comment')))) {
+            $comment = new Comment();
+            $comment->setContent($request->request->get('comment'));
+            $comment->setUser($this->getUser());
+            $comment->setVideo($video);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('video_details', ['video' => $video->getId()]);
     }
 
     public function mainCategories(): Response
