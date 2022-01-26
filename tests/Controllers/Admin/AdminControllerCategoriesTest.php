@@ -1,10 +1,11 @@
 <?php
 
-namespace App\tests;
+namespace App\Tests\Controllers\Admin;
 
 use App\Entity\Category;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\Rollback;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 
 class AdminControllerCategoriesTest extends WebTestCase
 {
