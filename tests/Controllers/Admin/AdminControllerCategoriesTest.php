@@ -4,27 +4,11 @@ namespace App\tests;
 
 use App\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use App\Tests\Rollback;
 
 class AdminControllerCategoriesTest extends WebTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->client = static::createClient([],[
-            'PHP_AUTH_USER' => 'jw@symf4.loc',
-            'PHP_AUTH_PW' => 'passw'
-        ]);
-        $this->client->disableReboot();
-
-        $this->entityManager = $this->client->getContainer()->get('doctrine.orm.entity_manager');
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->entityManager->close();
-        $this->entityManager = null; // avoid memory leaks
-    }
+    use Rollback;
 
     public function testTextOnPage()
     {
