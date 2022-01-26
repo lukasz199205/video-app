@@ -49,9 +49,21 @@ class Video
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="likedVideos")
+     */
+    private $usersThatLike;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="dislikedVideos")
+     */
+    private $usersThatDontLike;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->usersThatLike = new ArrayCollection();
+        $this->usersThatDontLike = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -142,6 +154,54 @@ class Video
                 $comment->setVideo(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsersThatLike(): Collection
+    {
+        return $this->usersThatLike;
+    }
+
+    public function addUsersThatLike(User $usersThatLike): self
+    {
+        if (!$this->usersThatLike->contains($usersThatLike)) {
+            $this->usersThatLike[] = $usersThatLike;
+        }
+
+        return $this;
+    }
+
+    public function removeUsersThatLike(User $usersThatLike): self
+    {
+        $this->usersThatLike->removeElement($usersThatLike);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsersThatDontLike(): Collection
+    {
+        return $this->usersThatDontLike;
+    }
+
+    public function addUsersThatDontLike(User $usersThatDontLike): self
+    {
+        if (!$this->usersThatDontLike->contains($usersThatDontLike)) {
+            $this->usersThatDontLike[] = $usersThatDontLike;
+        }
+
+        return $this;
+    }
+
+    public function removeUsersThatDontLike(User $usersThatDontLike): self
+    {
+        $this->usersThatDontLike->removeElement($usersThatDontLike);
 
         return $this;
     }
