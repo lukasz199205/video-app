@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block customstylesheets %}
+    {{ parent() }}
+    {% if app.user %}
+        <link rel="stylesheet" href="{{ asset('assets/css/likes.css') }}">
+    {% endif %}
+{% endblock %}
+
 {% block main %}
 
 <main role="main">
@@ -41,4 +48,11 @@
 
 
 </main>
+{% endblock %}
+
+{% block customjavascript %}
+    {{ parent() }}
+    {% if app.user %}
+        <script src="{{ asset('assets/js/likes.js') }}"></script>
+    {% endif %}
 {% endblock %}
