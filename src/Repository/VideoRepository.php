@@ -42,7 +42,6 @@ class VideoRepository extends ServiceEntityRepository
                 ->orderBy('likes', 'DESC');
         }
         $q = $dbquery->getQuery();
-        dump($q->getResult());
 
         $pagination = $this->paginator->paginate($dbquery, $page, Video::perPage);
 
