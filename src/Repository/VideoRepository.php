@@ -23,14 +23,28 @@ class VideoRepository extends ServiceEntityRepository
 
     public function findByChildIds(array $value, int $page, ?string $sortMethod)
     {
-        $sortMethod = $sortMethod != 'rating' ? $sortMethod: 'ASC';
-        $dbquery = $this->createQueryBuilder('v')
-            ->andWhere('v.category IN (:val)')
-            ->setParameter('val', $value)
-            ->orderBy('v.title', $sortMethod)
-            ->getQuery();
+        if ($sortMethod != 'rating') {
+            $dbquery = $this->createQueryBuilder('v')
+                ->andWhere('v.category IN (:val)')
+                ->leftJoin('v.comments', 'c')
+                ->leftJoin('v.usersThatLike', 'l')
+                ->leftJoin('v.usersThatDontLike', 'd')
+                ->addSelect('c','l','d')
+                ->setParameter('val', $value)
+                ->orderBy('v.title', $sortMethod);
+        } else {
+            $dbquery = $this->createQueryBuilder('v')
+                ->addSelect('COUNT(l) AS HIDDEN likes')
+                ->leftJoin('v.usersThatLike', 'l')
+                ->andWhere('v.category IN (:val)')
+                ->setParameter('val', $value)
+                ->groupBy('v')
+                ->orderBy('likes', 'DESC');
+        }
+        $q = $dbquery->getQuery();
+        dump($q->getResult());
 
-        $pagination = $this->paginator->paginate($dbquery, $page, 5);
+        $pagination = $this->paginator->paginate($dbquery, $page, Video::perPage);
 
         return $pagination;
     }
