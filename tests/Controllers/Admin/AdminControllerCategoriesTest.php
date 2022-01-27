@@ -3,13 +3,13 @@
 namespace App\Tests\Controllers\Admin;
 
 use App\Entity\Category;
-use App\Tests\Rollback;
+use App\Tests\RoleAdmin;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 
 class AdminControllerCategoriesTest extends WebTestCase
 {
-    use Rollback;
+    use RoleAdmin;
 
     public function testTextOnPage()
     {
