@@ -1,5 +1,7 @@
 {
+  "assets/js/likes.js": "/assets/js/likes.js",
   "assets/css/dashboard.css": "/assets/css/dashboard.css",
   "assets/css/login.css": "/assets/css/login.css",
+  "assets/css/likes.css": "/assets/css/likes.css",
   "assets/runtime.js": "/assets/runtime.js"
 }
