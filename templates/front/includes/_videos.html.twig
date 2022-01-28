@@ -2,14 +2,19 @@
     <div class="container">
      <div class="row">
     {% for video in videos %}
+        {% if videoNoMembers is not null %}
+            {% set videoId = 'https://player.vimeo.com/video/' ~ videoNoMembers %}
+        {% else %}
+            {% set videoId = video.vimeoId() %}
+        {% endif %}
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">
                 <div align="center" class="embed-responsive embed-responsive-16by9">
-                    <iframe class="" src="{{ video.vimeoid(app.user) }}" frameborder="0" allowfullscreen></iframe>
+                    <iframe class="" src="{{ videoId }}" frameborder="0" allowfullscreen></iframe>
                 </div>
                 <div class="card-body">
                     <h3>{{ video.getTitle() }}</h3>
-                    {% if not app.user %}
+                    {% if not app.user or videoNoMembers is not null %}
                     <p class="card-text text-danger">Video for <b>MEMBERS</b> only. <a href="{{ path('pricing') }}">Sign
                             up</a> for one month for free.</p>
                     {% endif %}
