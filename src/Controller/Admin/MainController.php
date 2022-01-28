@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\User;
 use App\Entity\Video;
 use App\Utils\CategoryTreeAdminOptionList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,9 @@ class MainController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('admin/my_profile.html.twig');
+        return $this->render('admin/my_profile.html.twig', [
+            'subscription' => $this->getUser()->getSubscription()
+        ]);
     }
 
     public function getAllCategories(CategoryTreeAdminOptionList $categories, $editedCategory = null): Response
@@ -47,5 +50,24 @@ class MainController extends AbstractController
         return $this->render('admin/videos.html.twig', [
             'videos' => $videos
         ]);
+    }
+
+    /**
+     * @Route("/cancel-plan", name="cancel_plan")
+     */
+    public function cancelPlan()
+    {
+        $user = $this->getDoctrine()->getRepository(User::class)->find($this->getUser());
+
+        $subscription = $user->getSubscription();
+        $subscription->setValidTo(new \DateTime());
+        $subscription->setPaymentStatus(null);
+        $subscription->setPlan('cancelled');
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('admin_main_page');
     }
 }
