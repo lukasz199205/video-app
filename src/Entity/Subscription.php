@@ -19,22 +19,22 @@ class Subscription
         'enterprise' => 29
     ];
 
-    private static function getPlanNameByIndex(int $index): string
+    public static function getPlanDataNameByIndex(int $index): string
     {
         return self::$planDataNames[$index];
     }
 
-    private static function getPlanDataPriceByName(string $name): int
+    public static function getPlanDataPriceByName(string $name): int
     {
         return self::$planDataPrices[$name];
     }
 
-    private static function getPlanDataNames(): array
+    public static function getPlanDataNames(): array
     {
         return self::$planDataNames;
     }
 
-    private static function getPlanDataPrices(): array
+    public static function getPlanDataPrices(): array
     {
         return self::$planDataPrices;
     }
