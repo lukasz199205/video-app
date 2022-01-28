@@ -1,10 +1,16 @@
 {% extends 'base.html.twig' %}
 
+{% if videoNoMembers is not null %}
+    {% set videoid = 'https://player.vimeo.com/video/' ~ videoNoMembers %}
+{% else %}
+    {% set videoid = video.vimeoid %}
+{% endif %}
+
 {% block main %}
 <br>
 <h1>{{ video.title }}</h1>
 <div align="center" class="embed-responsive embed-responsive-16by9">
-    <iframe class="" src="{{ video.vimeoid(app.user) }}" frameborder="0" allowfullscreen></iframe>
+    <iframe class="" src="{{ videoid }}" frameborder="0" allowfullscreen></iframe>
 </div>
 
 <hr>

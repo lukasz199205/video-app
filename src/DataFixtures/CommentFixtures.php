@@ -48,10 +48,11 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         ];
     }
 
-    public function getDependencies(): array
+    public function getDependencies()
     {
         return array(
-            UserFixtures::class
+            UserFixtures::class,
+            VideoFixtures::class
         );
     }
 }
