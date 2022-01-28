@@ -7,10 +7,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/admin/su")
+ */
 class SuperAdminController extends AbstractController
 {
     /**
-     * @Route("/su/upload-video", name="upload_video")
+     * @Route("/upload-video", name="upload_video")
      */
     public function uploadVideo(): Response
     {
@@ -18,7 +21,7 @@ class SuperAdminController extends AbstractController
     }
 
     /**
-     * @Route("/su/users", name="users")
+     * @Route("/users", name="users")
      */
     public function users(): Response
     {

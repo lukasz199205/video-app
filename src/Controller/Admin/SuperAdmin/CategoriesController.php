@@ -10,29 +10,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/admin/su")
+ */
 class CategoriesController extends AbstractController
 {
-    private function saveCategory($category, $request, $form)
-    {
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $category->setName($request->request->get('category')['name']);
-
-            $repository = $this->getDoctrine()->getRepository(Category::class);
-            $parent = $repository->find($request->request->get('category')['parent']);
-            $category->setParent($parent);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($category);
-            $entityManager->flush();
-
-            return true;
-        }
-        return false;
-    }
-
     /**
-     * @Route("/su/delete-category/{id}", name="delete_category")
+     * @Route("/delete-category/{id}", name="delete_category")
      */
     public function deleteCategory(Category $category): Response
     {
@@ -43,7 +27,7 @@ class CategoriesController extends AbstractController
     }
 
     /**
-     * @Route("/su/edit-category/{id}", name="edit_category", methods={"GET", "POST"})
+     * @Route("/edit-category/{id}", name="edit_category", methods={"GET", "POST"})
      */
     public function editCategory(Category $category, Request $request): Response
     {
@@ -65,7 +49,7 @@ class CategoriesController extends AbstractController
     }
 
     /**
-     * @Route("/su/categories", name="categories", methods={"GET","POST"})
+     * @Route("/categories", name="categories", methods={"GET","POST"})
      */
     public function categories(CategoryTreeAdminList $categories, Request $request): Response
     {
@@ -88,5 +72,23 @@ class CategoriesController extends AbstractController
             'form' => $form->createView(),
             'is_invalid' => $is_invalid
         ]);
+    }
+    private function saveCategory($category, $request, $form)
+    {
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $category->setName($request->request->get('category')['name']);
+
+            $repository = $this->getDoctrine()->getRepository(Category::class);
+            $parent = $repository->find($request->request->get('category')['parent']);
+            $category->setParent($parent);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($category);
+            $entityManager->flush();
+
+            return true;
+        }
+        return false;
     }
 }
