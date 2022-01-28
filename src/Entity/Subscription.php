@@ -7,9 +7,38 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SubscriptionRepository::class)
+ * @ORM\Table(name="subscriptions")
  */
 class Subscription
 {
+    private static $planDataNames = ['free','pro','enterprise'];
+
+    private static $planDataPrices = [
+        'free' => 0,
+        'pro' => 15,
+        'enterprise' => 29
+    ];
+
+    private static function getPlanNameByIndex(int $index): string
+    {
+        return self::$planDataNames[$index];
+    }
+
+    private static function getPlanDataPriceByName(string $name): int
+    {
+        return self::$planDataPrices[$name];
+    }
+
+    private static function getPlanDataNames(): array
+    {
+        return self::$planDataNames;
+    }
+
+    private static function getPlanDataPrices(): array
+    {
+        return self::$planDataPrices;
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
