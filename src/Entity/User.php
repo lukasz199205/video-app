@@ -74,7 +74,7 @@ class User implements UserInterface
     private $dislikedVideos;
 
     /**
-     * @ORM\OneToOne(targetEntity=Subscription::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=Subscription::class, cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $subscription;
 
