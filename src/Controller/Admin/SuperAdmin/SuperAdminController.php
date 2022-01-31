@@ -18,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class SuperAdminController extends AbstractController
 {
     /**
-     * @Route("/upload-video-locally", name="upload_video")
+     * @Route("/upload-video-locally", name="upload_video_locally")
      */
     public function uploadVideoLocally(Request $request, UploaderInterface $fileUploader): Response
     {
