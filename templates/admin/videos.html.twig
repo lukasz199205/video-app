@@ -28,14 +28,18 @@
         <td><a target="_blank" href="{{ path('video_details',{'video':video.id}) }}">go to video</a></td>
         {% if is_granted('ROLE_ADMIN') %}
         <td>
-            <form action="#" method="POST">
-                <select onchange="this.form.submit();">
-                <option selected>Parent...</option>
-                <option value="1">Funny</option>
-                <option value="1">--For kids</option>
-                <option value="1">----For adults</option>
-                <option value="2">Scary</option>
-                <option value="3">Motivating</option>
+            <form action="{{ path('update_video_category', {'video':video.id }) }}" method="post">
+                <select name="video_category" onchange="this.form.submit();">
+                {% for category in categories.categoryList %}
+                    {% if video.category is not null and video.category.id == category.id %}
+                        <option selected value="{{ category.id }}">{{ category.name }}</option>
+                    {% else %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endif %}
+                {% endfor %}
+                    {% if video.category is null %}
+                        <option selected value="0">No category</option>
+                    {% endif %}
                 </select>
             </form>
         </td>

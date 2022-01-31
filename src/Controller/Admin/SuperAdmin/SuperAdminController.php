@@ -99,4 +99,19 @@ class SuperAdminController extends AbstractController
 
         $this->redirectToRoute('users');
     }
+
+    /**
+     * @Route("/update-video-category/{video}", methods={"POST"} ,name="update_video_category")
+     */
+    public function updateVideoCategory(Request $request, Video $video)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $category = $this->getDoctrine()->getRepository(Category::class)->find($request->request->get('video_category'));
+
+        $video->setCategory($category);
+        $entityManager->persist($video);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('videos');
+    }
 }
