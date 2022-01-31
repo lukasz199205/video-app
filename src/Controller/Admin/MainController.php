@@ -4,10 +4,13 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Entity\Video;
+use App\Form\UserType;
 use App\Utils\CategoryTreeAdminOptionList;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("/admin")
@@ -17,10 +20,37 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="admin_main_page")
      */
-    public function index(): Response
+    public function index(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        $user = $this->getUser();
+        $form = $this->createForm(UserType::class, $user, ['user'=>$user]);
+        $form->handleRequest($request);
+        $isInvalid = null;
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $user->setName($request->request->get('user')['name']);
+            $user->setLastName($request->request->get('user')['lastName']);
+            $user->setEmail($request->request->get('user')['email']);
+            $password = $passwordEncoder->encodePassword($user, $request->request->get('user')['password']['first']);
+            $user->setPassword($password);
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash(
+                'success',
+                'Your changes were saved!'
+            );
+            return $this->redirectToRoute('admin_main_page');
+        }
+        elseif ($request->isMethod('POST')) {
+
+            $isInvalid = ' is-invalid';
+        }
+
         return $this->render('admin/my_profile.html.twig', [
-            'subscription' => $this->getUser()->getSubscription()
+            'subscription' => $this->getUser()->getSubscription(),
+            'form' => $form->createView(),
+            'isInvalid' => $isInvalid
         ]);
     }
 
