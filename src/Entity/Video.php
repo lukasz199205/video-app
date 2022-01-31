@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index as Index;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=VideoRepository::class)
@@ -17,6 +18,7 @@ class Video
     public const videoForNotLoggedInOrNoMembers = 113716040;
     public const vimeoPath = 'https://player.vimeo.com/video/';
     public const perPage = 5; //for pagination
+    public const uploadFolder = '/uploads/videos';
 
     /**
      * @ORM\Id
@@ -61,6 +63,12 @@ class Video
      * @ORM\JoinTable(name="dislikes")
      */
     private $usersThatDontLike;
+
+    /**
+     * @Assert\NotBlank(message="Plesase, upload the video as mp4 file.")
+     * @Assert\File(mimeTypes={"video/mp4"})
+     */
+    private $uploadedVideo;
 
     public function __construct()
     {
@@ -201,6 +209,18 @@ class Video
     public function removeUsersThatDontLike(User $usersThatDontLike): self
     {
         $this->usersThatDontLike->removeElement($usersThatDontLike);
+
+        return $this;
+    }
+
+    public function getUploadedVideo()
+    {
+        return $this->uploadedVideo;
+    }
+
+    public function setUploadedVideo($uploadedVideo): self
+    {
+        $this->uploadedVideo = $uploadedVideo;
 
         return $this;
     }
