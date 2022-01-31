@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% if videoNoMembers is not null %}
-    {% set videoid = 'https://player.vimeo.com/video/' ~ videoNoMembers %}
+    {% set videoid = videoNoMembers %}
 {% else %}
-    {% set videoid = video.vimeoid %}
+    {% set videoid = video.path %}
 {% endif %}
 
 {% block main %}
