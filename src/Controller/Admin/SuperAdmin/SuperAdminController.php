@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Form\VideoType;
+use App\Utils\Interfaces\UploaderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,7 @@ class SuperAdminController extends AbstractController
     /**
      * @Route("/upload-video-locally", name="upload_video")
      */
-    public function uploadVideoLocally(Request $request): Response
+    public function uploadVideoLocally(Request $request, UploaderInterface $fileUploader): Response
     {
         $video = new Video();
         $form = $this->createForm(VideoType::class, $video);
@@ -30,10 +31,11 @@ class SuperAdminController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             $file = $video->getUploadedVideo();
-            $fileName = 'to do'; //TODO: implement file name
+            $fileName = $fileUploader->upload($file);
+
             $basePath = Video::uploadFolder;
-            $video->setPath($basePath.$fileName);
-            $video->setTitle($fileName);
+            $video->setPath($basePath.$fileName[0]);
+            $video->setTitle($fileName[1]);
 
             $entityManager->persist($video);
             $entityManager->flush();
