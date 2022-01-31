@@ -26,3 +26,7 @@
 test.sh
 local-php-security-checker
 ###> local scripts
+
+###< local uploads
+/public/uploads/
+###> local uploads
