@@ -181,7 +181,7 @@ class SuperAdminController extends AbstractController
         $entityManager->remove($user);
         $entityManager->flush();
 
-        $this->redirectToRoute('users');
+        return $this->redirectToRoute('users');
     }
 
     /**
