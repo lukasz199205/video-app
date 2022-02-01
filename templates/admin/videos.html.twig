@@ -25,8 +25,14 @@
       <tr>
         <td>{{ loop.index }}</td>
         <td>{{ video.title }}</td>
-        <td><a target="_blank" href="{{ path('video_details',{'video':video.id}) }}">go to video</a></td>
-        {% if is_granted('ROLE_ADMIN') %}
+        <td><a target="_blank" href="{{ path('video_details',{'video':video.id}) }}">go to video</a>
+
+
+        {% if is_granted('ROLE_ADMIN') and video.duration is null %}
+            | <a href="{{ path('set_video_duration', {'video':video.id, 'vimeoId':video.vimeoid}) }}">Set duration</a>
+            {% endif %}
+        </td>
+          {% if is_granted('ROLE_ADMIN') %}
         <td>
             <form action="{{ path('update_video_category', {'video':video.id }) }}" method="post">
                 <select name="video_category" onchange="this.form.submit();">

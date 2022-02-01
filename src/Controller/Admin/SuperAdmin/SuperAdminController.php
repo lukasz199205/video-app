@@ -10,6 +10,7 @@ use App\Utils\Interfaces\UploaderInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -94,6 +95,68 @@ class SuperAdminController extends AbstractController
             );
         }
         return $this->redirectToRoute('videos');
+    }
+
+    /**
+     * @Route("/set-video-duration/{video}/{vimeoId}", name="set_video_duration", requirements={"vimeoId"=".+"})
+     */
+    public function setVideoDuration(Video $video, $vimeoId)
+    {
+        if (!is_numeric($vimeoId)) {
+
+            return $this->redirectToRoute('videos');
+        }
+
+        $userVimeoToken = $this->getUser()->getVimeoApiKey();
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.vimeo.com/videos/{$vimeoId}",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                "Accept: application/vnd.vimeo.*+json;version=3.4",
+                "Authorization: Bearer $userVimeoToken",
+                "Cache-Control: no-cache",
+                "Content-Type: application/x-www-form-urlencoded"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err)
+        {
+            throw new ServiceUnavailableHttpException('Error. Try again later. Message: '.$err);
+        }
+        else
+        {
+            $duration =  json_decode($response, true)['duration'] / 60;
+
+            if($duration)
+            {
+                $video->setDuration($duration);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($video);
+                $em->flush();
+            }
+            else
+            {
+                $this->addFlash(
+                    'danger',
+                    'We were not able to update duration. Check the video.'
+                );
+            }
+
+            return $this->redirectToRoute('videos');
+        }
+
     }
 
     /**
