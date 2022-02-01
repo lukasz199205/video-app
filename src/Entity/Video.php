@@ -18,7 +18,7 @@ class Video
     public const videoForNotLoggedInOrNoMembers = 'https://player.vimeo.com/video/113716040';
     public const vimeoPath = 'https://player.vimeo.com/video/';
     public const perPage = 5; //for pagination
-    public const uploadFolder = '/uploads/videos';
+    public const uploadFolder = '/uploads/videos/';
 
     /**
      * @ORM\Id
