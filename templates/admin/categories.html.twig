@@ -16,14 +16,14 @@
 
     {{ categories|raw }}
 
-{{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+{{ form_start(form) }}
     <div class="col-md-4 mb-3">
         <label for="validationServer01">Add new category</label>
         {{ form_widget(form.name, {'attr':{'class':'form-control' ~ is_invalid, 'placeholder':'Category name'}, 'id':'validationServer01'})}}
         <br>
 	    <label for="inlineFormCustomSelect">Parent:</label>
         <select name="category[parent]" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-            {{ render(controller('App\\Controller\\Admin\\MainController::getAllCategories')) }}
+            {{ render(controller('App\\Controller\\Admin\\SuperAdmin\\CategoriesController::getAllCategories')) }}
         </select>
         <div class="invalid-feedback">
             {{ form_errors(form.name) }}

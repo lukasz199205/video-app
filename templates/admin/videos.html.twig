@@ -25,21 +25,31 @@
       <tr>
         <td>{{ loop.index }}</td>
         <td>{{ video.title }}</td>
-        <td><a target="_blank" href="{{ path('video_details',{'video':video.id}) }}">go to video</a></td>
-        {% if is_granted('ROLE_ADMIN') %}
+        <td><a target="_blank" href="{{ path('video_details',{'video':video.id}) }}">go to video</a>
+
+
+        {% if is_granted('ROLE_ADMIN') and video.duration is null %}
+            | <a href="{{ path('set_video_duration', {'video':video.id, 'vimeoId':video.vimeoid}) }}">Set duration</a>
+            {% endif %}
+        </td>
+          {% if is_granted('ROLE_ADMIN') %}
         <td>
-            <form action="#" method="POST">
-                <select onchange="this.form.submit();">
-                <option selected>Parent...</option>
-                <option value="1">Funny</option>
-                <option value="1">--For kids</option>
-                <option value="1">----For adults</option>
-                <option value="2">Scary</option>
-                <option value="3">Motivating</option>
+            <form action="{{ path('update_video_category', {'video':video.id }) }}" method="post">
+                <select name="video_category" onchange="this.form.submit();">
+                {% for category in categories.categoryList %}
+                    {% if video.category is not null and video.category.id == category.id %}
+                        <option selected value="{{ category.id }}">{{ category.name }}</option>
+                    {% else %}
+                        <option value="{{ category.id }}">{{ category.name }}</option>
+                    {% endif %}
+                {% endfor %}
+                    {% if video.category is null %}
+                        <option selected value="0">No category</option>
+                    {% endif %}
                 </select>
             </form>
         </td>
-        <td><a href="#" onclick="delete_video(event,2);"><i class="fas fa-trash"></i></a></td>
+        <td><a href="{{ path('delete_video', {'video':video.id, 'path':video.vimeoId}) }}" onclick="delete_video(event);"><i class="fas fa-trash"></i></a></td>
           {% endif %}
       </tr>
         {% endfor %}
@@ -50,15 +60,9 @@
 {% block customjavascript %}
     {{ parent() }}
 <script>
-    function delete_video(e,video_id)
+    function delete_video(e)
     {
-        e.preventDefault();
-        if(confirm('Are you sure?')) 
-        {
-            console.log(id);
-            // delete video from vimeo
-            // window.location.href = 'clear database record with Symfony';
-        }
+        confirm('Are you sure?');
     }
 </script>
     {% endblock %}
