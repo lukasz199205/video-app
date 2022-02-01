@@ -19,16 +19,21 @@
     <a id="video_comments"></a>
 
     {% for comment in video.comments %}
-
+    <div class="col-md-12">
     <ul class="list-unstyled text-left">
         <li class="media">
             <img class="mr-3" src="{{ asset('assets/img/user.jpg') }}" alt="Generic placeholder image">
             <div class="media-body">
                 <h5 class="mt-0 mb-1"><b>{{ comment.user.name }} {{ comment.user.lastName }}</b> <small class="text-muted">added a comment <small><b>{{ comment.createdAt|ago }}</b></small></small></h5>
                 {{ comment.content }}
+
+                {% if app.user and app.user.id == comment.user.id %}
+                <a href="{{ path('delete_comment', {'comment':comment.id }) }}">Delete comment</a>
+                {% endif %}
             </div>
         </li>
     </ul>
+    </div>
     <hr>
 
     {% endfor %}
