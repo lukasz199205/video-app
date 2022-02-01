@@ -42,6 +42,8 @@ services:
         arguments:
             - '@Redis'
 
+    App\Utils\Interfaces\UploaderInterface: '@App\Utils\VimeoUploader'
+
     App\Utils\LocalUploader:
         arguments:
             $targetDirectory: '%videos_directory%'
