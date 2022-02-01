@@ -3,9 +3,9 @@
      <div class="row">
     {% for video in videos %}
         {% if videoNoMembers is not null %}
-            {% set videoId = 'https://player.vimeo.com/video/' ~ videoNoMembers %}
+            {% set videoId = videoNoMembers %}
         {% else %}
-            {% set videoId = video.vimeoId() %}
+            {% set videoId = video.path %}
         {% endif %}
         <div class="col-md-4">
             <div class="card mb-4 shadow-sm">

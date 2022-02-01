@@ -1,14 +1,6 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block mainadmin %}
-
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label }}" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endfor %}
 <h2>My profile <small><a onclick="return confirm('Are you sure?');" href="{{ path('delete_account') }}">delete account</a></small></h2>
     {% if not is_granted('ROLE_ADMIN') and subscription and subscription.getPlan in subscription.getPlanDataNames %}
         <p class="text-left">My plan - {{ subscription.getPlan|upper }}. <b> Valid to: </b> {{ subscription.validTo|date('Y-m-d') }}
@@ -24,7 +16,7 @@
         <p class="text-left">You do not have any plan. <a href="{{ path('pricing') }}">Get plan</a></p>
     {% endif %}
 
-{{ form_start(form, {'attr':{'novalidate':'novalidate'}}) }}
+{{ form_start(form) }}
     {% if is_granted('ROLE_ADMIN') %}
     <div class="form-group">
        <label for="user_vimeo_api_key">Vimeo API key</label>
@@ -56,12 +48,12 @@
         <label for="user_password_first">Password</label>
         {{ form_widget(form.password.first) }}
         <div class="invalid-feedback">
-            {{ form_errors(form.password.first) }}
+            {{ form_errors(form.password.first, {'attr':{'class':isInvalid, 'required':'required'}}) }}
         </div>
     </div>
     <div class="form-group">
         <label for="user_password_second">Confirm password</label>
-        {{ form_widget(form.password.second, {'attr':{'class':isInvalid}}) }}
+        {{ form_widget(form.password.second, {'attr':{'class':isInvalid, 'required':'required'}}) }}
         <div class="invalid-feedback">
             {{ form_errors(form.password.second) }}
         </div>
