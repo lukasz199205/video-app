@@ -20,8 +20,8 @@ class CategoryTreeAdminList extends CategoryTreeAbstract
         $this->categoryList .= $this->html_1;
         foreach ($categories_array as $value)
         {
-            $url_edit =  $this->urlGenerator->generate('edit_category', ['id' => $value['id']]);
-            $url_delete = $this->urlGenerator->generate('delete_category', ['id' => $value['id']]);
+            $url_edit =  $this->urlGenerator->generate('edit_category.en', ['id' => $value['id']]);
+            $url_delete = $this->urlGenerator->generate('delete_category.en', ['id' => $value['id']]);
             $this->categoryList .= $this->html_2 . $value['name'] . $this->html_3 . $url_edit . $this->html_4 . ' Edit' . $this->html_5 . $url_delete . $this->html_6 . 'Delete' . $this->html_7;
             if (!empty($value['children']))
             {
