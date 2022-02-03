@@ -1,7 +1,7 @@
 {% extends 'admin/base.html.twig' %}
 
 {% block mainadmin %}
-<h2>My profile <small><a onclick="return confirm('Are you sure?');" href="{{ path('delete_account') }}">delete account</a></small></h2>
+<h2>{% trans %}My profile{% endtrans %}<small><a onclick="return confirm('Are you sure?');" href="{{ path('delete_account') }}">delete account</a></small></h2>
     {% if not is_granted('ROLE_ADMIN') and subscription and subscription.getPlan in subscription.getPlanDataNames %}
         <p class="text-left">My plan - {{ subscription.getPlan|upper }}. <b> Valid to: </b> {{ subscription.validTo|date('Y-m-d') }}
         {% if subscription.validTo == null or subscription.paymentStatus == null %}
